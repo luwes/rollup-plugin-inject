@@ -88,6 +88,10 @@ export default function inject (options) {
 		name: 'inject',
 
 		transform (code, id) {
+			// Make sure e.g. \u0000rollupPluginBabelHelpers also gets processed.
+			// rollup-pluginutils.createFilter filters out \0 prefixed id's.
+			id = id.replace('\0', '');
+
 			if (!filter(id)) return null;
 			if (code.search(firstpass) == -1) return null;
 
